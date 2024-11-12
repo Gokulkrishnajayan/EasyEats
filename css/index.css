@@ -46,12 +46,14 @@ body {
 .navbar .nav-links {
     list-style: none;
     display: flex;
-    justify-content: flex-end; /* Align links to the right */
+    justify-content: flex-start; /* Align links to the left */
     align-items: center;
+    margin-left: auto; /* Push the links to the right of the logo */
+    padding-right: 30px;
 }
 
 .navbar .nav-links li {
-    margin-left: 30px;
+    margin-left: 20px; /* Adjust spacing between links */
     position: relative;
 }
 
@@ -74,6 +76,7 @@ body {
 /* Dropdown Menu */
 .dropdown {
     position: relative;
+    margin-left: -30px; /* Move the login dropdown further left */
 }
 
 .dropdown .dropdown-content {

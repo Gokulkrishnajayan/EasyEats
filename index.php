@@ -26,8 +26,8 @@
             <li class="dropdown">
                 <a href="#">Login</a>
                 <div class="dropdown-content">
-                    <a href="login.php">User Login</a>
-                    <a href="admin-login.php">Admin Login</a>
+                    <a href="user/login.php">User Login</a>
+                    <a href="admin/login.php">Admin Login</a>
                 </div>
             </li>
         </ul>
