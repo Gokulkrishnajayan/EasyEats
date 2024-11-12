@@ -5,9 +5,10 @@ session_start();
 include('db_connection.php');
 
 // Check if admin is logged in
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] != true) {
-    header("Location: admin-login.php");
-    exit();
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    // Redirect to the admin login page if not logged in or not an admin
+    header('Location: admin-login.php');  
+    exit;
 }
 
 // Fetch categories for the dropdown
@@ -49,21 +50,14 @@ $items_result = mysqli_query($conn, "SELECT * FROM items JOIN categories ON item
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/navbar.css"> <!-- Link to navbar styles -->
     <title>Item Management</title>
     <link rel="stylesheet" href="admin_style.css">
 </head>
 <body>
 
-    <nav class="navbar">
-        <ul>
-            <li><a href="admin-dashboard.php">Dashboard</a></li>
-            <li><a href="order_management.php">Order Management</a></li>
-            <li><a href="item_management.php">Item Management</a></li>
-            <li><a href="category_management.php">Category Management</a></li>
-            <li><a href="announcement_management.php">Announcements</a></li>
-            <li><a href="logout.php">Logout</a></li>
-        </ul>
-    </nav>
+    <!-- Include Navbar -->
+    <?php include('navbar.php'); ?>
 
     <div class="container">
         <h2>Item Management</h2>

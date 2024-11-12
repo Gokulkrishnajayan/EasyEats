@@ -14,24 +14,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - EasyEats</title>
     <link rel="stylesheet" href="css/admin-dashboard.css"> <!-- Your CSS file for styling -->
+    <link rel="stylesheet" href="css/navbar.css"> <!-- Link to navbar styles -->
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <a href="#">EasyEats Admin</a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="admin-dashboard.php">Dashboard</a></li>
-            <li><a href="order-management.php">Order</a></li>
-            <li><a href="announcement-management.php">Announcement</a></li>
-            <li><a href="category-management.php">Category</a></li>
-            <li><a href="item-management.php">Item</a></li>
-            <li><a href="event-management.php">Event</a></li>
-            <li><a href="logout.php">Logout</a></li>
-        </ul>
-    </nav>
+    <!-- Include Navbar -->
+    <?php include('navbar.php'); ?>
 
     <!-- Admin Dashboard Content -->
     <section class="dashboard-content">

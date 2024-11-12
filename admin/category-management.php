@@ -1,7 +1,8 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    header('Location: admin-login.php');
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    // Redirect to the admin login page if not logged in or not an admin
+    header('Location: admin-login.php');  
     exit;
 }
 
@@ -33,9 +34,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/navbar.css"> <!-- Link to navbar styles -->
     <title>Category Management - EasyEats</title>
 </head>
 <body>
+
+    <!-- Include Navbar -->
+    <?php include('navbar.php'); ?>
+
     <h1>Category Management</h1>
     <form action="category-management.php" method="POST">
         <input type="text" name="category_name" placeholder="Enter category name" required>
