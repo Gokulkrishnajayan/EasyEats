@@ -9,6 +9,7 @@
         <li><a href="announcement-management.php">Announcement</a></li>
         <li><a href="category-management.php">Category</a></li>
         <li><a href="item-management.php">Item</a></li>
+        <li><a href="feedback-management.php">Feedbacks</a></li>
         <li><a href="../logout.php">Logout</a></li>
     </ul>
 </nav>

@@ -1,0 +1,19 @@
+/* Basic styles for the cart page */
+table th, table td {
+    vertical-align: middle;
+}
+
+table img {
+    max-width: 100px;
+    border-radius: 5px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.text-right {
+    text-align: right;
+    margin-top: 20px;
+}

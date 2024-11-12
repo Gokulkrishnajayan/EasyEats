@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Redirect to the appropriate dashboard based on the role
         if ($_SESSION['role'] === 'user') {
-            header("Location: user-dashboard.php");   // Redirect to the user dashboard
+            header("Location: home.php");   // Redirect to the user dashboard
         }
         exit;
     } else {
