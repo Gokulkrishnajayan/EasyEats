@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db.php'; // Include the database connection
+require_once '../db.php'; // Include the database connection
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the form data

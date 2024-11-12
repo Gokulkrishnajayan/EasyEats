@@ -20,7 +20,7 @@ if (isset($_GET['error'])) {
     <div class="login-container">
         <h2>Login to EasyEats</h2>
         
-        <form action="../login_process.php" method="POST">
+        <form action="login_process.php" method="POST">
             <label for="username">Username or Email</label>
             <input type="text" id="username" name="username" required>
 
