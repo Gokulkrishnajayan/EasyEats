@@ -14,11 +14,11 @@ include('../db.php');
 // Get the user_id from the session
 $user_id = $_SESSION['user_id'];
 
-// Updated query to include order_type and delivery_date
+// Updated query to exclude rejected orders (add WHERE status != 'rejected')
 $query = "SELECT c.order_id, c.quantity, c.price, c.delivery_date, c.status, c.order_type, c.created_at, i.name AS item_name, i.image AS item_image
           FROM cart c
           JOIN items i ON c.item_id = i.id
-          WHERE c.user_id = :user_id";
+          WHERE c.user_id = :user_id AND c.status != 'rejected'";  // Exclude rejected status orders
 
 $stmt = $pdo->prepare($query);
 $stmt->execute([':user_id' => $user_id]);
@@ -76,9 +76,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (isset($_POST['remove'])) {
         // Remove item from cart
         $order_id = $_POST['order_id'];
-        $query = "DELETE FROM cart WHERE order_id = :order_id AND user_id = :user_id";
+
+        // Step 1: Retrieve the reference_unique_key using the order_id
+        $query = "SELECT reference_unique_key FROM cart WHERE order_id = :order_id AND user_id = :user_id";
         $stmt = $pdo->prepare($query);
         $stmt->execute([':order_id' => $order_id, ':user_id' => $user_id]);
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($order) {
+            $reference_unique_key = $order['reference_unique_key'];
+
+            // Step 2: Delete the order from the cart table
+            $query = "DELETE FROM cart WHERE order_id = :order_id AND user_id = :user_id";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute([':order_id' => $order_id, ':user_id' => $user_id]);
+
+            // Step 3: Delete the order from the orders table using the reference_unique_key
+            $query = "DELETE FROM orders WHERE reference_unique_key = :reference_unique_key";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute([':reference_unique_key' => $reference_unique_key]);
+        }
     }
 
     // Refresh the page to reflect changes
@@ -175,4 +192,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </body>
 </html>
-

@@ -27,21 +27,46 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
             die("Connection failed: " . $conn->connect_error);
         }
 
-        // Update the status of the order in the database
-        $sql = "UPDATE orders SET status = ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $status, $order_id); // Bind the parameters to the prepared statement
+        // Step 1: Retrieve the reference_unique_key using the order_id
+        $query = "SELECT reference_unique_key FROM orders WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $order_id); // "i" means integer
         $stmt->execute();
+        $stmt->bind_result($reference_unique_key);
+        $stmt->fetch();
+        
+        // Close the statement after fetching the result
+        $stmt->close();
 
-        if ($stmt->affected_rows > 0) {
-            // Redirect back to the order management page after updating the status
-            header('Location: order-management.php');
-            exit;
+        if ($reference_unique_key) {
+            // Step 2: Update the status in the cart table based on reference_unique_key
+            $query = "UPDATE cart SET status = ? WHERE reference_unique_key = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("ss", $status, $reference_unique_key); // "ss" means string
+            $stmt->execute();
+
+            // Step 3: Update the status in the orders table
+            $query = "UPDATE orders SET status = ? WHERE reference_unique_key = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("ss", $status, $reference_unique_key);
+            $stmt->execute();
+
+            // Check if the update was successful
+            if ($stmt->affected_rows > 0) {
+                // Redirect back to the order management page after updating the status
+                header('Location: order-management.php');
+                exit;
+            } else {
+                echo "Error updating order status.";
+            }
+
+            // Close the statement after all updates
+            $stmt->close();
         } else {
-            echo "Error updating order status.";
+            echo "Order not found.";
         }
 
-        $stmt->close();
+        // Close the connection
         $conn->close();
     } else {
         echo "Invalid action.";
@@ -49,4 +74,5 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
 } else {
     echo "Invalid request.";
 }
+
 ?>

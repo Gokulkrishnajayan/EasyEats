@@ -21,9 +21,13 @@ if (isset($_POST['item_id'], $_POST['item_name'], $_POST['order_type'])) {
     // Determine the order status based on order type
     $status = ($order_type === 'dayorder') ? 'Approved' : 'Pending';
     
+    // Generate a unique reference key using the current date and time (YYMMDD-H)
+    $date_time = date('ymd-H'); // Format: YYMMDD-H
+    $reference_unique_key = $date_time . '-' . uniqid(); // Adding a unique ID part to ensure the key is unique
+    
     // Prepare the SQL query to insert the order into the database
-    $query = "INSERT INTO orders (username, item_name, order_datetime, customization, status, order_type) 
-              VALUES (:username, :item_name, CURRENT_TIMESTAMP, :customization, :status, :order_type)";
+    $query = "INSERT INTO orders (username, item_name, order_datetime, customization, status, order_type, reference_unique_key) 
+              VALUES (:username, :item_name, CURRENT_TIMESTAMP, :customization, :status, :order_type, :reference_unique_key)";
     
     // Prepare the statement
     $stmt = $pdo->prepare($query);
@@ -34,6 +38,7 @@ if (isset($_POST['item_id'], $_POST['item_name'], $_POST['order_type'])) {
     $stmt->bindParam(':customization', $customization);
     $stmt->bindParam(':status', $status);
     $stmt->bindParam(':order_type', $order_type);
+    $stmt->bindParam(':reference_unique_key', $reference_unique_key); // Bind the reference key
     
     // Execute the query
     if ($stmt->execute()) {
@@ -47,9 +52,14 @@ if (isset($_POST['item_id'], $_POST['item_name'], $_POST['order_type'])) {
         $item = $price_stmt->fetch(PDO::FETCH_ASSOC);
         $price = $item['price'];
         
-        // Insert the item into the cart table, including the order_type
-        $cart_query = "INSERT INTO cart (user_id, item_id, quantity, price, status, order_type, created_at, updated_at)
-                       VALUES (:user_id, :item_id, 1, :price, :status, :order_type, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+        // Insert the item into the cart table, including the order_type and reference_unique_key
+        if ($status === 'Approved' && $order_type === 'dayorder') {
+            $cart_query = "INSERT INTO cart (user_id, item_id, quantity, price, status, order_type, created_at, updated_at, delivery_date, reference_unique_key)
+                           VALUES (:user_id, :item_id, 1, :price, :status, :order_type, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :reference_unique_key)";
+        } else {
+            $cart_query = "INSERT INTO cart (user_id, item_id, quantity, price, status, order_type, created_at, updated_at, reference_unique_key)
+                           VALUES (:user_id, :item_id, 1, :price, :status, :order_type, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :reference_unique_key)";
+        }
         
         // Prepare the statement for the cart insertion
         $cart_stmt = $pdo->prepare($cart_query);
@@ -58,7 +68,8 @@ if (isset($_POST['item_id'], $_POST['item_name'], $_POST['order_type'])) {
             ':item_id' => $item_id,
             ':status' => $status,
             ':price' => $price,
-            ':order_type' => $order_type // Add the order_type to the cart insertion
+            ':order_type' => $order_type, // Add the order_type to the cart insertion
+            ':reference_unique_key' => $reference_unique_key // Add the reference key
         ]);
         
         // Redirect to the cart page after successful insertion
