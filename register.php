@@ -13,7 +13,7 @@ if (isset($_GET['error'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - EasyEats</title>
-    <link rel="stylesheet" href="style.css"> <!-- Optional: link to your CSS file -->
+    <link rel="stylesheet" href="css/registration.css"> <!-- Optional: link to your CSS file -->
 </head>
 <body>
 
@@ -30,10 +30,13 @@ if (isset($_GET['error'])) {
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required>
 
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+
             <button type="submit">Sign Up</button>
         </form>
 
-        <p>Already have an account? <a href="login.php">Login here</a></p>
+        <p>Already have an account? <a href="user/login.php">Login here</a></p>
     </div>
 
 </body>

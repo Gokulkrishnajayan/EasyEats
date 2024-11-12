@@ -7,10 +7,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
+    $confirm_password = trim($_POST['confirm_password']);
 
     // Input validation
-    if (empty($username) || empty($email) || empty($password)) {
+    if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
         header("Location: register.php?error=All fields are required");
+        exit;
+    }
+
+    // Check if the password and confirm password match
+    if ($password !== $confirm_password) {
+        header("Location: register.php?error=Passwords do not match");
         exit;
     }
 
