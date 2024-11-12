@@ -16,11 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if the username is an email or just a username
     if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
         // The username is an email
-        $stmt = $pdo->prepare("SELECT id, username, password FROM users WHERE email = :email");
+        $stmt = $pdo->prepare("SELECT id, username, password, role FROM users WHERE email = :email");
         $stmt->bindParam(':email', $username);
     } else {
         // The username is not an email, it's a regular username
-        $stmt = $pdo->prepare("SELECT id, username, password FROM users WHERE username = :username");
+        $stmt = $pdo->prepare("SELECT id, username, password, role FROM users WHERE username = :username");
         $stmt->bindParam(':username', $username);
     }
 
@@ -33,9 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Password is correct, create session variables
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];  // Store the role in the session
 
-        // Redirect to the home page/dashboard
-        header("Location: home.php"); // Redirect after successful login
+        // Redirect to the appropriate dashboard based on the role
+        if ($_SESSION['role'] === 'user') {
+            header("Location: user-dashboard.php");   // Redirect to the user dashboard
+        }
         exit;
     } else {
         // Invalid username/password
@@ -47,3 +50,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: login.php");
     exit;
 }
+?>
