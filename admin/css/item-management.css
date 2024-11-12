@@ -72,12 +72,18 @@ form button {
     color: white;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 14px;  /* Smaller font size for a compact look */
+    padding: 10px 12px;  /* Compact padding (6px vertical, 12px horizontal) */
+    border-radius: 4px;  /* Slightly rounded corners */
+    text-align: center;  /* Center text inside the button */
+    width: auto;  /* Ensure button only takes necessary width */
+    margin-top: 10px;  /* Add slight spacing from other form elements */
 }
 
 form button:hover {
     background-color: #218838;
 }
+
 
 /* Manage Existing Items Table */
 table {
@@ -120,6 +126,11 @@ table td img {
     max-width: 600px;  /* Limit the width of the form */
     margin: 0 auto;
     padding: 20px;
+}
+
+/* Add some spacing between sections */
+.form-section + .items-section {
+    margin-top: 40px;  /* Add extra space between form and the table */
 }
 
 /* Responsive Design */
