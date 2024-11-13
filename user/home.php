@@ -121,46 +121,58 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all items as an associative
 
     <script>
         // Function to open the customization modal and handle form submission
-        function handlePlaceOrder(itemId) {
-            // Open the modal
-            $('#customizationModal').modal('show');
-            
-            // When the "OK" button in the modal is clicked
-            $('#submitCustomizationBtn').click(function() {
-                // Get the custom text
-                var customizationText = $('#customization-text').val();
-                
-                // Check if the user entered any customization text
-                if (customizationText.trim() === '') {
-                    alert('Please enter some customization text');
-                    return; // Prevent submission if empty
-                }
+function handlePlaceOrder(itemId) {
+    // Get the selected order type
+    var orderType = $('select[name="order_type"]').val();
 
-                // Attach the customization text to the form
-                var orderForm = $('#order-form-' + itemId);
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'customization',
-                    value: customizationText
-                }).appendTo(orderForm);
+    // If the order type is "Day Order," skip the customization modal and submit the form
+    if (orderType === 'dayorder') {
+        var orderForm = $('#order-form-' + itemId);
+        orderForm.submit(); // Submit the form directly
+        alert("Thank you for your order! Your order has been placed successfully.");
+        return; // Exit the function, so the modal doesn't open
+    }
 
-                // Submit the form
-                orderForm.submit();
-                
-                // Close the modal
-                $('#customizationModal').modal('hide');
+    // Otherwise, show the customization modal for "Preorder" or other types
+    $('#customizationModal').modal('show');
 
-                // Display the order confirmation alert
-                alert("Thank you for your order! Your order has been placed successfully.");
-            });
+    // When the "OK" button in the modal is clicked
+    $('#submitCustomizationBtn').click(function() {
+        // Get the custom text
+        var customizationText = $('#customization-text').val();
+        
+        // Check if the user entered any customization text
+        if (customizationText.trim() === '') {
+            alert('Please enter some customization text');
+            return; // Prevent submission if empty
         }
 
-        // Bind the Place Order button click to open the modal
-        <?php foreach ($items as $item): ?>
-            $('#place-order-btn-<?php echo $item['id']; ?>').click(function() {
-                handlePlaceOrder(<?php echo $item['id']; ?>);
-            });
-        <?php endforeach; ?>
+        // Attach the customization text to the form
+        var orderForm = $('#order-form-' + itemId);
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'customization',
+            value: customizationText
+        }).appendTo(orderForm);
+
+        // Submit the form
+        orderForm.submit();
+        
+        // Close the modal
+        $('#customizationModal').modal('hide');
+
+        // Display the order confirmation alert
+        alert("Thank you for your order! Your order has been placed successfully.");
+    });
+}
+
+// Bind the Place Order button click to open the modal or submit the form
+<?php foreach ($items as $item): ?>
+    $('#place-order-btn-<?php echo $item['id']; ?>').click(function() {
+        handlePlaceOrder(<?php echo $item['id']; ?>);
+    });
+<?php endforeach; ?>
+
     </script>
 
 </body>
