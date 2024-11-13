@@ -30,7 +30,7 @@ if (isset($_GET['error'])) {
             <button type="submit">Login</button>
         </form>
 
-        <p>Don't have an account? <a href="../register.php">Sign up here</a></p>
+        
     </div>
 
 </body>

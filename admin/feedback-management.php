@@ -77,7 +77,7 @@ if (isset($_GET['delete'])) {
                         <div class="actions">
                             <a href="feedback-management.php?delete=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this feedback?')">Delete</a>
                             <?php if ($row['status'] == 'unread') { ?>
-                                <a href="#" class="mark-read">Mark as Read</a>
+                                
                             <?php } ?>
                         </div>
                     </div>

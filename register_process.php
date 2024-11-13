@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Insert the new user into the database
     $stmt = $pdo->prepare("INSERT INTO users (username, password, email) VALUES (:username, :password, :email)");
     $stmt->bindParam(':username', $username);
-    $stmt->bindParam(':password', $hashed_password);
+    $stmt->bindParam(':password', $password);
     $stmt->bindParam(':email', $email);
 
     if ($stmt->execute()) {

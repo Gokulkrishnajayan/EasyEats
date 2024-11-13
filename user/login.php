@@ -31,6 +31,7 @@ if (isset($_GET['error'])) {
         </form>
 
         <p>Don't have an account? <a href="../register.php">Sign up here</a></p>
+        <p><a href="forgot_password.php">Forgot Password?</a></p> <!-- Forgot Password Link -->
     </div>
 
 </body>

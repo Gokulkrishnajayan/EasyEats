@@ -197,10 +197,10 @@ if (isset($_GET['order_id'])) {
                     <div class="form-group">
                         <label for="bank_name">Select Your Bank</label>
                         <select class="form-control" name="bank_name">
-                            <option value="bank1">Bank 1</option>
-                            <option value="bank2">Bank 2</option>
-                            <option value="bank3">Bank 3</option>
-                            <option value="bank4">Bank 4</option>
+                            <option value="bank1">SBI</option>
+                            <option value="bank2">AXIS</option>
+                            <option value="bank3">UNION BANK</option>
+                            <option value="bank4">BanK OF BARODA</option>
                         </select>
                     </div>
                 </div>
