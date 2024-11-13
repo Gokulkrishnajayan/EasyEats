@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['username'] = $username; // Store username in the session
 
         // Redirect to the login page or dashboard
-        header("Location: user/login.php");
+        header("Location: login.php");
         exit;
     } else {
         // If there was an error inserting the data
